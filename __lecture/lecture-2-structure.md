@@ -111,6 +111,10 @@ export default combineReducers({
 });
 
 // What is the initial state?
+{
+  color: "red",
+  number: 4
+}
 ```
 
 ---
@@ -132,6 +136,11 @@ export default combineReducers({
 // What is the initial state?
 ```
 
+{
+  item: { hi: 5},
+  location: "montreal"
+}
+
 ---
 
 ```js
@@ -149,6 +158,11 @@ export default combineReducers({
 });
 
 // What is the initial state?
+
+{
+  pet: "cat",
+  household: "couch"
+}
 ```
 
 ---
@@ -179,6 +193,16 @@ export default combineReducers({
 });
 
 // What is the initial state?
+
+{
+  data: {
+    entries: []
+  },
+  ui: {
+    modal: null,
+    tooltip: null
+  }
+}
 ```
 
 ---

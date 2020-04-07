@@ -39,19 +39,24 @@ const receiveData = (data) => ({
   data,
 });
 
-const failToRetrieveData = (error) => ({
+const failToRetrieveData = (err) => ({
   type: 'FAIL_TO_RETRIEVE_DATA',
-  error,
+  err,
 });
 
 const App = () => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
+    dispatch(startRequestingData())
     fetch('/some-data')
       .then((res) => res.json())
-      .then((data) => {})
-      .catch((err) => {});
+      .then((data) => {
+        dispatch(receiveData(data))
+      })
+      .catch((err) => {
+        dispatch(failToRetrieveData(err))
+      });
   };
 
   return <button onClick={handleClick}>Do something</button>;
@@ -84,12 +89,14 @@ const App = () => {
       .then((res) => res.json())
       .then((scores) => {
         // TODO
+        dispatch(receiveHockeyScores(scores))
       });
 
     fetch('/baseball')
       .then((res) => res.json())
       .then((scores) => {
         // TODO
+        dispatch(receiveBaseballScores(scores))
       });
   }, []);
 
@@ -106,23 +113,46 @@ Update this example so that it dispatches an action when _both_ of the endpoints
 ---
 
 ```js
-const receiveAllScores = () => ({
+const receiveAllScores = ({scores}) => ({
   type: 'RECEIVE_ALL_SCORES',
 });
 
 const App = () => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     // Dispatch `receiveAllScores` after BOTH fetches have completed
 
-    fetch('/hockey').then((scores) => {
-      dispatch(receiveHockeyScores(scores));
-    });
+    const hockeyRes = await fetch('/hockey');
+    const hockeyScores = await hockeyRes.json();
+    const baseballRes = await fetch('/baseball');
+    const baseballScores = await hockeyRes.json();
 
-    fetch('/baseball').then((scores) => {
-      dispatch(receiveBaseballScores(scores));
-    });
+    dispatch(receiveAllScores({hockeyScores, baseballScores})
+  }, []);
+
+  return <Scores />;
+};
+```
+
+
+```js
+const receiveAllScores = ({scores}) => ({
+  type: 'RECEIVE_ALL_SCORES',
+});
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  React.useEffect(async () => {
+    // Dispatch `receiveAllScores` after BOTH fetches have completed
+
+    const hockeyRes = await fetch('/hockey');
+    const hockeyScores = await hockeyRes.json();
+    const baseballRes = await fetch('/baseball');
+    const baseballScores = await hockeyRes.json();
+
+    await dispatch(receiveAllScores({hockeyScores, baseballScores})
   }, []);
 
   return <Scores />;
