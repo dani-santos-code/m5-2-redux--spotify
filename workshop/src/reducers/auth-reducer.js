@@ -3,8 +3,24 @@ const initialState = {
   status: "idle",
 };
 
-export default function authReduducer(state = initialState, action) {
+export default function authReducer(state = initialState, action) {
   switch (action.type) {
+    case "REQUEST_ACCESS_TOKEN":
+      return {
+        ...state,
+        status: "loading",
+      };
+    case "RECEIVE_ACCESS_TOKEN":
+      return {
+        ...state,
+        token: action.payload.token,
+        status: "idle",
+      };
+    case "RECEIVE_ACCESS_TOKEN_ERROR":
+      return {
+        ...state,
+        status: "error",
+      };
     default: {
       return state;
     }
