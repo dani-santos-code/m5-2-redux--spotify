@@ -11,13 +11,13 @@ export const receiveAccessTokenError = () => ({
   type: "RECEIVE_ACCESS_TOKEN_ERROR",
 });
 
-export const requestArtistProfileToken = () => ({
+export const requestArtistProfile = () => ({
   type: "REQUEST_ARTIST_PROFILE",
 });
 
-export const receiveArtistProfile = (token) => ({
+export const receiveArtistProfile = (currentArtist) => ({
   type: "RECEIVE_ARTIST_PROFILE",
-  payload: { token },
+  payload: { currentArtist },
 });
 
 export const receiveArtistProfileError = () => ({

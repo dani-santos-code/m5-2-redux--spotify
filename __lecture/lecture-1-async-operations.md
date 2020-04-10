@@ -146,7 +146,8 @@ const App = () => {
 
   React.useEffect(async () => {
     // Dispatch `receiveAllScores` after BOTH fetches have completed
-
+    let numOfCompletedRequests = 0;
+    
     const hockeyRes = await fetch('/hockey');
     const hockeyScores = await hockeyRes.json();
     const baseballRes = await fetch('/baseball');
